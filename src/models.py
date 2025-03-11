@@ -6,13 +6,14 @@ class Artifact(db.Model):
     __tablename__ = 'artifacts'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    historical_context = db.Column(db.Text, nullable=True)
-    year_of_looting = db.Column(db.Integer, nullable=True)
-    origin = db.Column(db.String(255), nullable=True)
-    current_location = db.Column(db.String(255), nullable=True)
-    repatriation_status = db.Column(db.String(255), nullable=True)
+    historical_context = db.Column(db.Text)
+    year_of_looting = db.Column(db.String(4))
+    origin = db.Column(db.String(100))
+    current_location = db.Column(db.String(100))
+    repatriation_status = db.Column(db.String(100))
+    photographs = db.Column(db.PickleType)  # Assuming photographs are stored as a list of dictionaries
 
     def __repr__(self):
         return f'<Artifact {self.name}>'

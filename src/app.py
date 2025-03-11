@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_migrate import Migrate
 from routes import app as routes_blueprint
 from models import db
 
@@ -8,6 +9,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
     app.register_blueprint(routes_blueprint)
+
+    migrate = Migrate(app, db)
 
     with app.app_context():
         db.create_all()
