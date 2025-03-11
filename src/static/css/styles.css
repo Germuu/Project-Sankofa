@@ -1,61 +1,90 @@
 /* styles.css */
 
+/* Import Roboto font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #242424;
+    color: #e0e0e0;
 }
 
 header {
-    background: #35424a;
-    color: #ffffff;
-    padding: 10px 0;
+    background: #1f1f1f;
+    color: #e0e0e0;
+    padding: 20px 0;
     text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 h1 {
     margin: 0;
+    font-size: 2.5em;
 }
 
 nav {
     margin: 20px 0;
+    text-align: center;
 }
 
 nav a {
-    color: #ffffff;
+    color: #e0e0e0;
     text-decoration: none;
     padding: 10px 15px;
+    margin: 0 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
 }
 
 nav a:hover {
-    background: #e8491d;
+    background: #333333;
 }
 
 .container {
     width: 80%;
     margin: auto;
     overflow: hidden;
+    padding: 20px;
+    background: #1f1f1f;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .artifact-card {
-    background: #ffffff;
-    border: 1px solid #dddddd;
+    background: #1f1f1f;
+    border: 1px solid #333333;
     border-radius: 5px;
     padding: 15px;
     margin: 10px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s;
+}
+
+.artifact-card:hover {
+    transform: scale(1.05);
 }
 
 .artifact-card h2 {
     margin-top: 0;
 }
 
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #333333;
+    border-radius: 5px;
+    background: #1f1f1f;
+    color: #e0e0e0;
+}
+
 .footer {
     text-align: center;
     padding: 20px;
-    background: #35424a;
-    color: #ffffff;
+    background: #1f1f1f;
+    color: #e0e0e0;
     position: relative;
     bottom: 0;
     width: 100%;
