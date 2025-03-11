@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Project Sankofa</title>
+</head>
+<body>
+    <h1>Welcome to Project Sankofa</h1>
+    <ul>
+        <li><a href="{{ url_for('app.artifact_database') }}">Artifact Database</a></li>
+        <li><a href="{{ url_for('app.interactive_map') }}">Interactive Map</a></li>
+    </ul>
+
+    <h2>Add a New Artifact</h2>
+    <form action="{{ url_for('app.add_artifact') }}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <label for="historical_context">Historical Context:</label>
+        <textarea id="historical_context" name="historical_context"></textarea><br>
+
+        <label for="year_of_looting">Year of Looting:</label>
+        <input type="text" id="year_of_looting" name="year_of_looting"><br>
+
+        <label for="origin">Origin:</label>
+        <input type="text" id="origin" name="origin"><br>
+
+        <label for="current_location">Current Location:</label>
+        <input type="text" id="current_location" name="current_location"><br>
+
+        <label for="repatriation_status">Repatriation Status:</label>
+        <input type="text" id="repatriation_status" name="repatriation_status"><br>
+
+        <button type="submit">Add Artifact</button>
+    </form>
+</body>
+</html>

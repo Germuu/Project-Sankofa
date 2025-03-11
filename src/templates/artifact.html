@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>{{ artifact.name }}</title>
+</head>
+<body>
+    {% include 'base.html' %}
+    <div class="container">
+        <h1>{{ artifact.name }}</h1>
+        <p><strong>Description:</strong> {{ artifact.description }}</p>
+        <p><strong>Historical Context:</strong> {{ artifact.historical_context }}</p>
+        <p><strong>Year of Looting:</strong> {{ artifact.year_of_looting }}</p>
+        <p><strong>Origin:</strong> {{ artifact.origin }}</p>
+        <p><strong>Current Location:</strong> {{ artifact.current_location }}</p>
+        <p><strong>Repatriation Status:</strong> {{ artifact.repatriation_status }}</p>
+        
+        {% if artifact.photographs %}
+            <h2>Photographs</h2>
+            <div class="photographs">
+                {% for photo in artifact.photographs %}
+                    <img src="{{ photo.url }}" alt="{{ photo.description }}">
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <a href="{{ url_for('index') }}">Back to Artifact Database</a>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
