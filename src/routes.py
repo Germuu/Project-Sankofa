@@ -1,11 +1,41 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
-from models import Artifact, db, User
+from flask import session, redirect, url_for, request, render_template, Blueprint
+from models import User, Artifact, db
 from sqlalchemy import text
 
 app = Blueprint('app', __name__)
 
+# Login route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Query the database for the user
+        user = User.query.filter_by(username=username).first()
+
+        if user and user.password == password:  # Replace with hashed password check in production
+            session['user'] = user.username
+            session['is_admin'] = user.is_admin
+            if session['is_admin']:
+                return redirect(url_for('app.admin_dashboard'))
+            return redirect(url_for('app.index'))
+        else:
+            return "Invalid credentials", 401
+
+    return render_template('login.html')
+
+# Logout route
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('app.login'))
+
+# Index route (restricted to logged-in users)
 @app.route('/')
 def index():
+    if not session.get('user'):
+        return redirect(url_for('app.login'))
     return render_template('index.html')
 
 @app.route('/add_artifact', methods=['POST'])
@@ -71,34 +101,18 @@ def search_artifacts():
 #     
 #     return render_template('search_results.html', artifacts=artifacts, query=query)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        # Query the database for the user
-        user = User.query.filter_by(username=username).first()
-
-        if user and user.password == password:  # Replace with hashed password check in production
-            session['user'] = user.username
-            session['is_admin'] = user.is_admin
-            return redirect(url_for('app.index'))
-        else:
-            return "Invalid credentials", 401
-
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('app.index'))
-
 @app.route('/admin')
 def admin_dashboard():
-    # Check if the user is logged in and is an admin
-    if not session.get('user') or not session.get('is_admin'):
-        return "Access Denied", 403
-
+    # Flawed: No access control
     artifacts = Artifact.query.all()
     return render_template('admin_dashboard.html', artifacts=artifacts)
+
+# Fix (commented out):
+# @app.route('/admin')
+# def admin_dashboard():
+#     # Fixed: Check if the user is logged in and is an admin
+#     if not session.get('user') or not session.get('is_admin'):
+#         return "Access Denied", 403
+#
+#     artifacts = Artifact.query.all()
+#     return render_template('admin_dashboard.html', artifacts=artifacts)
