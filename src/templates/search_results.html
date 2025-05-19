@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Search Results for "{{ query }}"</h1>
+
+<div class="search-container">
+    <form action="{{ url_for('app.search_artifacts') }}" method="GET">
+        <input type="text" name="q" placeholder="Search artifacts..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<div class="artifacts-container">
+    {% if artifacts %}
+        {% for artifact in artifacts %}
+            <div class="artifact-card">
+                <h2>{{ artifact.name }}</h2>
+                <p>{{ artifact.description }}</p>
+                <p>Origin: {{ artifact.origin }}</p>
+                <a href="{{ url_for('app.artifact_detail', id=artifact.id) }}">View Details</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No artifacts found matching your search.</p>
+    {% endif %}
+</div>
+{% endblock %}

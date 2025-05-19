@@ -8,6 +8,15 @@
 </head>
 <body>
     <h1>Artifact Database</h1>
+    
+    <!-- Search form -->
+    <div class="search-container">
+        <form action="{{ url_for('app.search_artifacts') }}" method="GET">
+            <input type="text" name="q" placeholder="Search artifacts..." value="{{ request.args.get('q', '') }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
     <ul>
         {% for artifact in artifacts %}
             <li><a href="{{ url_for('app.artifact_detail', id=artifact.id) }}">{{ artifact.name }}</a> - {{ artifact.description }}</li>
