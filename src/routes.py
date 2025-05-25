@@ -2,10 +2,12 @@ from flask import session, redirect, url_for, request, render_template, Blueprin
 from models import User, Artifact, db
 from sqlalchemy import text
 import bcrypt
+import logging
 
 app = Blueprint('app', __name__)
 
-
+# Configure logging
+#logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 
 # Index route (restricted to logged-in users)
 @app.route('/')
@@ -107,10 +109,12 @@ def login():
         if user and user.password == password:
             session['user'] = user.username
             session['is_admin'] = user.is_admin
+            #logging.info(f"Successful login: {username}")
             if session['is_admin']:
                 return redirect(url_for('app.admin_dashboard'))
             return redirect(url_for('app.index'))
         else:
+            #logging.warning(f"Failed login attempt: {username}")
             return "Invalid credentials", 401
 
     return render_template('login.html')
