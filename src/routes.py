@@ -1,35 +1,11 @@
 from flask import session, redirect, url_for, request, render_template, Blueprint
 from models import User, Artifact, db
 from sqlalchemy import text
+import bcrypt
 
 app = Blueprint('app', __name__)
 
-# Login route
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
 
-        # Query the database for the user
-        user = User.query.filter_by(username=username).first()
-
-        if user and user.password == password:  # Replace with hashed password check in production
-            session['user'] = user.username
-            session['is_admin'] = user.is_admin
-            if session['is_admin']:
-                return redirect(url_for('app.admin_dashboard'))
-            return redirect(url_for('app.index'))
-        else:
-            return "Invalid credentials", 401
-
-    return render_template('login.html')
-
-# Logout route
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('app.login'))
 
 # Index route (restricted to logged-in users)
 @app.route('/')
@@ -116,3 +92,97 @@ def admin_dashboard():
 #
 #     artifacts = Artifact.query.all()
 #     return render_template('admin_dashboard.html', artifacts=artifacts)
+
+# Flawed `/login` route (uncommented):
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Query the database for the user
+        user = User.query.filter_by(username=username).first()
+
+        # Insecure: Directly compare plaintext passwords
+        if user and user.password == password:
+            session['user'] = user.username
+            session['is_admin'] = user.is_admin
+            if session['is_admin']:
+                return redirect(url_for('app.admin_dashboard'))
+            return redirect(url_for('app.index'))
+        else:
+            return "Invalid credentials", 401
+
+    return render_template('login.html')
+
+# Fixed `/login` route (commented out):
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#
+#         # Query the database for the user
+#         user = User.query.filter_by(username=username).first()
+#
+#         # Verify the hashed password
+#         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+#             session['user'] = user.username
+#             session['is_admin'] = user.is_admin
+#             if session['is_admin']:
+#                 return redirect(url_for('app.admin_dashboard'))
+#             return redirect(url_for('app.index'))
+#         else:
+#             return "Invalid credentials", 401
+#
+#     return render_template('login.html')
+
+# Flawed `/register` route (uncommented):
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Check if the username already exists
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return "Username already exists", 400
+
+        # Insecure: Store the password in plaintext
+        new_user = User(username=username, password=password, is_admin=False)
+        db.session.add(new_user)
+        db.session.commit()
+
+        return redirect(url_for('app.login'))
+
+    return render_template('register.html')
+
+# Fixed `/register` route (commented out):
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#
+#         # Check if the username already exists
+#         existing_user = User.query.filter_by(username=username).first()
+#         if existing_user:
+#             return "Username already exists", 400
+#
+#         # Hash the password before storing it
+#         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+#
+#         # Store the hashed password in the database
+#         new_user = User(username=username, password=hashed_password.decode('utf-8'), is_admin=False)
+#         db.session.add(new_user)
+#         db.session.commit()
+#
+#         return redirect(url_for('app.login'))
+#
+#     return render_template('register.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('app.login'))
