@@ -26,18 +26,27 @@ def add_artifact():
     current_location = request.form.get('current_location')
     repatriation_status = request.form.get('repatriation_status')
 
+    # Commented out input validation
+    # if not name or len(name) > 100:
+    #     return "Invalid name. It must be non-empty and less than 100 characters.", 400
+    # if not description or len(description) > 500:
+    #     return "Invalid description. It must be non-empty and less than 500 characters.", 400
+    # if year_of_looting and not year_of_looting.isdigit():
+    #     return "Invalid year of looting. It must be a numeric value.", 400
+
     new_artifact = Artifact(
         name=name,
         description=description,
         historical_context=historical_context,
-        year_of_looting=year_of_looting,
+        year_of_looting=int(year_of_looting) if year_of_looting else None,
         origin=origin,
         current_location=current_location,
         repatriation_status=repatriation_status
     )
     db.session.add(new_artifact)
     db.session.commit()
-    return redirect(url_for('app.artifact_database'))
+
+    return "Artifact added successfully!"
 
 @app.route('/artifacts')
 def artifact_database():
