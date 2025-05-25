@@ -7,36 +7,71 @@
     <title>Project Sankofa</title>
 </head>
 <body>
-    <h1>Welcome to Project Sankofa</h1>
-    <ul>
-        <li><a href="{{ url_for('app.artifact_database') }}">Artifact Database</a></li>
-        <li><a href="{{ url_for('app.interactive_map') }}">Interactive Map</a></li>
-    </ul>
+    <header>
+        <div class="container">
+            <h1>Project Sankofa</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('app.artifact_database') }}">Artifact Database</a></li>
+                    <li><a href="{{ url_for('app.interactive_map') }}">Interactive Map</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <h2>Add a New Artifact</h2>
-    <form action="{{ url_for('app.add_artifact') }}" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
+    <main class="container">
+        <section class="intro">
+            <h2>Welcome to Project Sankofa</h2>
+            <p>Preserving history, one artifact at a time. Explore our database or contribute to the project by adding new artifacts.</p>
+        </section>
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea><br>
+        <section class="form-section">
+            <h2>Add a New Artifact</h2>
+            <form action="{{ url_for('app.add_artifact') }}" method="post">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
 
-        <label for="historical_context">Historical Context:</label>
-        <textarea id="historical_context" name="historical_context"></textarea><br>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
 
-        <label for="year_of_looting">Year of Looting:</label>
-        <input type="text" id="year_of_looting" name="year_of_looting"><br>
+                <div class="form-group">
+                    <label for="historical_context">Historical Context:</label>
+                    <textarea id="historical_context" name="historical_context"></textarea>
+                </div>
 
-        <label for="origin">Origin:</label>
-        <input type="text" id="origin" name="origin"><br>
+                <div class="form-group">
+                    <label for="year_of_looting">Year of Looting:</label>
+                    <input type="text" id="year_of_looting" name="year_of_looting">
+                </div>
 
-        <label for="current_location">Current Location:</label>
-        <input type="text" id="current_location" name="current_location"><br>
+                <div class="form-group">
+                    <label for="origin">Origin:</label>
+                    <input type="text" id="origin" name="origin">
+                </div>
 
-        <label for="repatriation_status">Repatriation Status:</label>
-        <input type="text" id="repatriation_status" name="repatriation_status"><br>
+                <div class="form-group">
+                    <label for="current_location">Current Location:</label>
+                    <input type="text" id="current_location" name="current_location">
+                </div>
 
-        <button type="submit">Add Artifact</button>
-    </form>
+                <div class="form-group">
+                    <label for="repatriation_status">Repatriation Status:</label>
+                    <input type="text" id="repatriation_status" name="repatriation_status">
+                </div>
+
+                <button type="submit" class="btn">Add Artifact</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Project Sankofa. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
